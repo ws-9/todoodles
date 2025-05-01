@@ -1,0 +1,32 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+}
+
+.sidebar {
+  background-color: antiquewhite;
+  height: 100vh;
+  width: 300px;
+}
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-container {
+  background-color: aliceblue;
+  height: 100vh;
+  flex: 1 0 0;
+}
+
+.project-item-display {
+  background-color: beige;
+  display: flex;
+  justify-content: space-between;
+}

@@ -3,9 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
   <title>Todoodles</title>
 </head>
 <body>
-  
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <h1 class="sidebar-title">Projects</h1>
+      <button class="toggle-sidebar-btn">Burger</button>
+    </div>
+    <ul class="projects-list">
+      <li class="project-item">
+        <div class="project-item-display">
+          <h2 class="project-name">Some project</h2>
+          <button class="toggle-project-item">Arrow</button>
+        </div>
+        <ul class="todo-list">
+          <li class="todo-item">
+            <h3 class="todo-name">foo</h3>
+            <h4 class="todo-date">03-20-24</h4>
+          </li>
+          <li class="todo-item">
+            <h3 class="todo-name">bar</h3>
+            <h4 class="todo-date">12-10-23</h4>
+          </li>
+          <li class="todo-item">
+            <h3 class="todo-name">baz</h3>
+            <h4 class="todo-date">9-13-02</h4>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="todo-container"></div>
 </body>
 </html>
