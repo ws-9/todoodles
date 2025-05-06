@@ -98,3 +98,50 @@ class Project {
     });
   }
 }
+
+class Todo {
+  #id;
+  #title;
+  #description;
+  #dueDate;
+  #priority;
+  #notes;
+  #checklist;
+  constructor(id, title, description) {
+    this.#id = id;
+    this.#title = title;
+    this.#description = description;
+  }
+
+  getId() {
+    return this.#id;
+  }
+
+  setId(id) {
+    this.#id = id;
+  }
+
+  getTitle() {
+    return this.#title;
+  }
+
+  setTitle(title) {
+    this.#title = title;
+  }
+
+  getDescription() {
+    return this.#description;
+  }
+
+  setDescription(description) {
+    this.#description = description;
+  }
+
+  clone() {
+    return new Todo({
+      id: this.#id,
+      title: this.#title,
+      description: this.#description
+    });
+  }
+}
