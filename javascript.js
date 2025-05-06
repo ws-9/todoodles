@@ -40,3 +40,61 @@ const projectsManager = (function initProjectsManagerIIFE() {
     deleteProject
   }
 })();
+
+class Project {
+  #id;
+  #name;
+  #description;
+  #todos;
+
+  constructor({ id = 0, name = "", description = "", todos = [] }) {
+    this.#id = id;
+    this.#name = name;
+    this.#description = description;
+    this.#todos = todos.map(todo => todo.clone());
+  }
+
+  getId() {
+    return this.#id;
+  }
+
+  setId(id) {
+    this.#id = id;
+  }
+
+  getName() {
+    return this.#name;
+  }
+
+  setName(name) {
+    this.#name = name;
+  }
+  
+  getDescription() {
+    return this.#description;
+  }
+
+  setDescription(description) {
+    this.#description = description;
+  }
+
+  update(updates) {
+    for (const [key, value] of Object.entries(updates)) {
+      const setterName = `set${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+      if (typeof this[setterName] === "function") {
+        this[setterName](value);
+      } else {
+        console.warn(`No setter found for property "${key}"`);
+      }
+    }
+  }
+
+  clone() {
+    return new Project({
+      id: this.#id,
+      name: this.#name,
+      description: this.#description,
+      todos: this.#todos
+    });
+  }
+}
