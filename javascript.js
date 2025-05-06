@@ -45,13 +45,15 @@ class Project {
   #id;
   #name;
   #description;
-  #todos;
+  #todosList;
+  #idCounter;
 
-  constructor({ id = 0, name = "", description = "", todos = [] }) {
+  constructor({ id = 0, name = "", description = "", todos = [], idCounter = 1 }) {
     this.#id = id;
     this.#name = name;
     this.#description = description;
-    this.#todos = todos.map(todo => todo.clone());
+    this.#todosList = todos.map(todo => todo.clone());
+    this.#idCounter = idCounter;
   }
 
   getId() {
@@ -78,6 +80,36 @@ class Project {
     this.#description = description;
   }
 
+  addTodo(todo) {
+    todo.setId(idCounter++);
+    this.#todosList.push(todo);
+  }
+
+  getTodos() {
+    return this.#todosList.map(todo => todo.clone());
+  }
+
+  getTodo(todoId) {
+    return this.#todosList.find(todo => todo.getId() === todoId)?.clone() ?? null;
+  }
+
+  updateTodo(todoId, updates) {
+    const todo = this.#todosList.find(todo => todo.getId() === todoId);
+    if (!todo) {
+      return false;
+    }
+    todo.update(updates);
+    return true;
+  }
+
+  deleteTodo(todoId) {
+    const deletedIndex = this.#todosList.findIndex(todo => todo.getId() === todoId);
+    if (deletedIndex !== -1) {
+      return this.#todosList.splice(deletedIndex, 1);
+    }
+    return null;
+  }
+
   update(updates) {
     for (const [key, value] of Object.entries(updates)) {
       const setterName = `set${key.charAt(0).toUpperCase()}${key.slice(1)}`;
@@ -94,7 +126,8 @@ class Project {
       id: this.#id,
       name: this.#name,
       description: this.#description,
-      todos: this.#todos
+      todos: this.#todosList,
+      idCounter: this.#idCounter
     });
   }
 }
