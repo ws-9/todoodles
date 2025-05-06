@@ -32,12 +32,52 @@ const projectsManager = (function initProjectsManagerIIFE() {
     return null;
   }
 
+  function addTodoToProject(projectId, todo) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      project.addTodo(todo);
+    }
+  }
+
+  function getTodosFromProject(projectId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.getTodos();
+    }
+  }
+
+  function getTodoFromProject(projectId, todoId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.getTodo(todoId);
+    }
+  }
+
+  function updateTodoFromProject(projectId, todoId, updates) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.updateTodo(todoId, updates);
+    }
+  }
+
+  function deleteTodoFromProject(projectId, todoId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.deleteTodo(todoId);
+    }
+  }
+
   return {
     getProjects,
     addProject,
     getProject,
     updateProject,
-    deleteProject
+    deleteProject,
+    addTodoToProject,
+    getTodosFromProject,
+    getTodoFromProject,
+    updateTodoFromProject,
+    deleteTodoFromProject
   }
 })();
 
