@@ -12,11 +12,16 @@ body {
   background-color: rgb(242, 238, 235);
   height: 100vh;
   width: 300px;
+  border-right: 2px solid rgb(255, 255, 245);
 }
 
 .sidebar-top {
   display: flex;
   justify-content: space-between;
+}
+
+.todo-list {
+  padding: 0px 0px 0px 50px;
 }
 
 .main-content {
@@ -41,7 +46,6 @@ body {
 }
 
 .project-item-display {
-  background-color: beige;
   display: flex;
   justify-content: space-between;
 }
