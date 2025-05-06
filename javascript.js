@@ -140,7 +140,7 @@ class Todo {
   #priority;
   #notes;
   #checklist;
-  constructor(id, title, description) {
+  constructor(id = 0, title = "", description = "") {
     this.#id = id;
     this.#title = title;
     this.#description = description;
