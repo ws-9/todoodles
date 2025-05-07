@@ -2,6 +2,17 @@ const projectsManager = (function initProjectsManagerIIFE() {
   let idCounter = 1;
   const projectsList = [];
 
+  function renderSidebarComponent() {
+    const sidebarProjectsList = document.createElement("ul");
+    sidebarProjectsList.className = "projects-list";
+
+    for (const project of projectsList) {
+      sidebarProjectsList.appendChild(project.renderSidebarComponent());
+    }
+
+    return sidebarProjectsList;
+  }
+
   function getProjects() {
     return projectsList.map(project => project.clone());
   }
@@ -68,6 +79,7 @@ const projectsManager = (function initProjectsManagerIIFE() {
   }
 
   return {
+    renderSidebarComponent,
     getProjects,
     addProject,
     getProject,
@@ -94,6 +106,34 @@ class Project {
     this.#description = description;
     this.#todosList = todos.map(todo => todo.clone());
     this.#idCounter = idCounter;
+  }
+
+  renderSidebarComponent() {
+    const projectItem = document.createElement("li");
+    projectItem.className = "project-item";
+    projectItem.dataset.id = this.#id;
+
+    const projectItemDisplay = document.createElement("div");
+    projectItemDisplay.className = "project-item-display";
+
+    const projectTitle = document.createElement("h2");
+    projectTitle.textContent = this.#name;
+
+    const toggleProjectItem = document.createElement("button");
+    toggleProjectItem.className = "toggle-project-item";
+    toggleProjectItem.textContent = "Arrow";
+
+    const todoList = document.createElement("ul");
+    todoList.className = "todo-list";
+
+    for (const todo of this.#todosList) {
+      todoList.appendChild(todo.renderSidebarComponent());
+    }
+
+    projectItem.append(projectItemDisplay, todoList);
+    projectItemDisplay.append(projectTitle, toggleProjectItem);
+
+    return projectItem;
   }
 
   getId() {
@@ -184,6 +224,22 @@ class Todo {
     this.#id = id;
     this.#title = title;
     this.#description = description;
+  }
+
+  renderSidebarComponent() {
+    const todoItem = document.createElement("li");
+    todoItem.className = "todo-item";
+    todoItem.dataset.id = this.#id;
+
+    const todoTitle = document.createElement("h3");
+    todoTitle.textContent = this.#title;
+
+    const todoDueDate = document.createElement("h4");
+    todoDueDate.textContent = "11/11/11";
+
+    todoItem.append(todoTitle, todoDueDate);
+
+    return todoItem;
   }
 
   getId() {
