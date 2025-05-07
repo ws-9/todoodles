@@ -121,7 +121,7 @@ class Project {
   }
 
   addTodo(todo) {
-    todo.setId(idCounter++);
+    todo.setId(this.#idCounter++);
     this.#todosList.push(todo);
   }
 
