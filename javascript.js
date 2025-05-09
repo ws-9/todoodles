@@ -122,6 +122,10 @@ class Project {
     const toggleProjectItem = document.createElement("button");
     toggleProjectItem.className = "toggle-project-item";
     toggleProjectItem.textContent = "Arrow";
+    toggleProjectItem.addEventListener("click", (e) => {
+      const todoList = e.target.closest("li.project-item").querySelector("ul.todo-list");
+      todoList.classList.toggle("hidden")
+    })
 
     const todoList = document.createElement("ul");
     todoList.className = "todo-list";
