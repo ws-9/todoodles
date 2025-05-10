@@ -99,13 +99,15 @@ class Project {
   #description;
   #todosList;
   #idCounter;
+  #hidden;
 
-  constructor({ id = 0, name = "", description = "", todos = [], idCounter = 1 }) {
+  constructor({ id = 0, name = "", description = "", todos = [], idCounter = 1, hidden = false }) {
     this.#id = id;
     this.#name = name;
     this.#description = description;
     this.#todosList = todos.map(todo => todo.clone());
     this.#idCounter = idCounter;
+    this.#hidden = hidden;
   }
 
   renderSidebarComponent() {
@@ -129,6 +131,9 @@ class Project {
 
     const todoList = document.createElement("ul");
     todoList.className = "todo-list";
+    if (this.#hidden) {
+      todoList.classList.add("hidden")
+    }
 
     for (const todo of this.#todosList) {
       todoList.appendChild(todo.renderSidebarComponent());
@@ -167,6 +172,14 @@ class Project {
   addTodo(todo) {
     todo.setId(this.#idCounter++);
     this.#todosList.push(todo);
+  }
+
+  getHidden() {
+    return this.#hidden;
+  }
+
+  setHidden(hidden) {
+    this.#hidden = hidden;
   }
 
   getTodos() {
@@ -211,7 +224,8 @@ class Project {
       name: this.#name,
       description: this.#description,
       todos: this.#todosList,
-      idCounter: this.#idCounter
+      idCounter: this.#idCounter,
+      hidden: this.#hidden
     });
   }
 }
@@ -284,7 +298,7 @@ proj1.addTodo(new Todo({title: "fooTitle1", description: "barDesc1"}));
 proj1.addTodo(new Todo({title: "fooTitle2", description: "barDesc2"}));
 proj1.addTodo(new Todo({title: "fooTitle3", description: "barDesc3"}));
 
-const proj2 = new Project({name: "baz", description: "baq"});
+const proj2 = new Project({name: "baz", description: "baq", hidden: true});
 proj2.addTodo(new Todo({title: "bazTitle1", description: "baqDesc1"}));
 proj2.addTodo(new Todo({title: "bazTitle2", description: "baqDesc2"}));
 
