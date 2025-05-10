@@ -136,6 +136,7 @@ class Project {
     toggleProjectItem.textContent = "Arrow";
     toggleProjectItem.addEventListener("click", (e) => {
       const todoList = e.target.closest("li.project-item").querySelector("ul.todo-list");
+      this.#hidden = (this.#hidden) ? false : true;
       todoList.classList.toggle("hidden")
     })
 
