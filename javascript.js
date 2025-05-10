@@ -3,6 +3,15 @@ const projectsManager = (function initProjectsManagerIIFE() {
   const projectsList = [];
 
   function renderSidebarComponent() {
+    const sidebar = document.createElement("div");
+    sidebar.className = "sidebar";
+    const sidebarTop = document.createElement("div");
+    sidebarTop.className = "sidebar-top";
+    sidebarTop.appendChild(document.createElement("h1"));
+    sidebarTop.firstElementChild.textContent = "Projects";
+    sidebarTop.appendChild(document.createElement("button"));
+    sidebarTop.lastElementChild.textContent = "Add Project";
+
     const sidebarProjectsList = document.createElement("ul");
     sidebarProjectsList.className = "projects-list";
 
@@ -10,7 +19,8 @@ const projectsManager = (function initProjectsManagerIIFE() {
       sidebarProjectsList.appendChild(project.renderSidebarComponent());
     }
 
-    return sidebarProjectsList;
+    sidebar.append(sidebarTop, sidebarProjectsList);
+    return sidebar;
   }
 
   function getProjects() {
@@ -305,7 +315,7 @@ proj2.addTodo(new Todo({title: "bazTitle2", description: "baqDesc2"}));
 projectsManager.addProject(proj1)
 projectsManager.addProject(proj2)
 
-const sidebar = document.querySelector(".sidebar");
-sidebar.appendChild(projectsManager.renderSidebarComponent());
+const body = document.querySelector("body");
+body.insertAdjacentElement("afterbegin", projectsManager.renderSidebarComponent())
 
 console.log(projectsManager.renderSidebarComponent())
