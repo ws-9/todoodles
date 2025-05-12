@@ -69,7 +69,7 @@ class SideBar {
   }
   
   render() {
-    if (this.#component == null) {
+    if (this.#component === undefined) {
       this.#component = this.#projectManager.renderSidebarComponent();
     } else {
       this.#component.replaceWith(this.#projectManager.renderSidebarComponent());
@@ -86,7 +86,7 @@ class SideBar {
           projectId: projectId,
         });
       /* Selected dropdown button */
-      } else if (e.target.closest(".project-item-display") && e.target.tagName == "BUTTON") {
+      } else if (e.target.closest(".project-item-display") && e.target.tagName === "BUTTON") {
         let projectId = +e.target.closest("li.project-item").dataset.projectId;
         let newHidden = this.#projectManager.getProject(projectId).getHidden() ? false : true;
         this.#projectManager.updateProject(projectId, { hidden: newHidden });
