@@ -61,7 +61,7 @@ class SideBar {
 
   constructor(projectManager) {
     this.#projectManager = projectManager;
-    this.#component = this.#projectManager.renderSidebarComponent();
+    this.render();
   }
 
   setMediator(mediator) {
@@ -70,6 +70,25 @@ class SideBar {
   
   render() {
     this.#component = this.#projectManager.renderSidebarComponent();
+
+    const projectsList = this.#component.querySelector("ul.projects-list");
+    projectsList.addEventListener("click", (e) => {
+      /* Selected project using its display */
+      if (e.target.closest(".project-item-display") && e.target.tagName != "BUTTON") {
+        console.log(`Project id: ${e.target.closest("li.project-item").dataset.projectId}`);
+      }
+      
+    });
+    
+    const projectItems = projectsList.querySelectorAll("li.project-item");
+    projectItems.forEach(project => {
+      project.querySelector("ul.todo-list").addEventListener("click", (e) => {
+        /* Selected to-do from the to-do list */
+        if (e.target.closest("li[data-todo-id]")) {
+          console.log(`Todo id: ${e.target.parentElement.dataset.todoId}, Project id: ${e.target.closest("li.project-item").dataset.projectId}`);
+        }
+      });
+    });
   }
 
   getComponent() {
