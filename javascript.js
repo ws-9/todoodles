@@ -69,7 +69,11 @@ class SideBar {
   }
   
   render() {
-    this.#component = this.#projectManager.renderSidebarComponent();
+    if (this.#component == null) {
+      this.#component = this.#projectManager.renderSidebarComponent();
+    } else {
+      this.#component.replaceWith(this.#projectManager.renderSidebarComponent());
+    }
 
     const projectsList = this.#component.querySelector("ul.projects-list");
     projectsList.addEventListener("click", (e) => {
