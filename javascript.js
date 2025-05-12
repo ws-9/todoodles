@@ -9,12 +9,12 @@ class Application {
     this.#mainContent.setMediator(this);
   }
 
-  clickProject() {
-
-  }
-
-  clickTodo() {
-
+  notify({ component, event, projectId, todoId, }) {
+    console.log("Component:");
+    console.log(component);
+    console.log(`Event: ${event}`);
+    console.log(`Project: ${projectId}`);
+    console.log(`Todo: ${todoId}`);
   }
 
   init() {
@@ -79,9 +79,13 @@ class SideBar {
     projectsList.addEventListener("click", (e) => {
       /* Selected project using its display */
       if (e.target.closest(".project-item-display") && e.target.tagName != "BUTTON") {
-        console.log(`Project id: ${e.target.closest("li.project-item").dataset.projectId}`);
+        const projectId = e.target.closest("li.project-item").dataset.projectId;
+        this.#mediator.notify({
+          component: this,
+          event: "itemSelected",
+          projectId: projectId,
+        });
       }
-      
     });
     
     const projectItems = projectsList.querySelectorAll("li.project-item");
@@ -89,7 +93,14 @@ class SideBar {
       project.querySelector("ul.todo-list").addEventListener("click", (e) => {
         /* Selected to-do from the to-do list */
         if (e.target.closest("li[data-todo-id]")) {
-          console.log(`Todo id: ${e.target.parentElement.dataset.todoId}, Project id: ${e.target.closest("li.project-item").dataset.projectId}`);
+          const projectId = e.target.closest("li.project-item").dataset.projectId;
+          const todoId = e.target.parentElement.dataset.todoId;
+          this.#mediator.notify({
+            component: this,
+            event: "itemSelected",
+            projectId: projectId,
+            todoId: todoId
+          });
         }
       });
     });
