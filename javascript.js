@@ -123,7 +123,7 @@ class Project {
   renderSidebarComponent() {
     const projectItem = document.createElement("li");
     projectItem.className = "project-item";
-    projectItem.dataset.id = this.#id;
+    projectItem.dataset.projectId = this.#id;
 
     const projectItemDisplay = document.createElement("div");
     projectItemDisplay.className = "project-item-display";
@@ -258,7 +258,7 @@ class Todo {
   renderSidebarComponent() {
     const todoItem = document.createElement("li");
     todoItem.className = "todo-item";
-    todoItem.dataset.id = this.#id;
+    todoItem.dataset.todoId = this.#id;
 
     const todoTitle = document.createElement("h3");
     todoTitle.textContent = this.#title;
