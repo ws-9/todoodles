@@ -395,7 +395,9 @@ proj2.addTodo(new Todo({title: "bazTitle2", description: "baqDesc2"}));
 projectsManager.addProject(proj1)
 projectsManager.addProject(proj2)
 
-const body = document.querySelector("body");
-body.insertAdjacentElement("afterbegin", projectsManager.renderSidebarComponent())
+const app = new Application(
+    new SideBar(projectsManager),
+    new MainContent(projectsManager)
+);
 
-console.log(projectsManager.renderSidebarComponent())
+app.init();
