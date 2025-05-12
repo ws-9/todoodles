@@ -1,3 +1,82 @@
+class Application {
+  #sidebar;
+  #mainContent;
+
+  constructor(sidebar, mainContent) {
+    this.#sidebar = sidebar;
+    this.#mainContent = mainContent;
+    this.#sidebar.setMediator(this);
+    this.#mainContent.setMediator(this);
+  }
+
+  clickProject() {
+
+  }
+
+  clickTodo() {
+
+  }
+
+  init() {
+    const body = document.querySelector("body");
+    body.insertAdjacentElement("afterbegin", this.#sidebar.getComponent());
+    body.insertAdjacentElement("beforeend", this.#mainContent.getComponent());
+  }
+}
+
+class MainContent {
+  #mediator;
+  #projectManager;
+  #component;
+
+  constructor(projectManager) {
+    this.#projectManager = projectManager;
+    this.render();
+  }
+
+  setMediator(mediator) {
+    this.#mediator = mediator;
+  }
+
+  render() {
+    const mainContent = document.createElement("div");
+    mainContent.classList = "main-content todo-item-content";
+
+    mainContent.append(document.createElement("h1"), document.createElement("p"));
+    mainContent.firstElementChild.textContent = "This is a to-do.";
+    mainContent.lastElementChild.textContent = "This is a to-do description.";
+
+    this.#component = mainContent;
+  }
+
+  getComponent() {
+    return this.#component;
+  }
+}
+
+class SideBar {
+  #mediator;
+  #projectManager;
+  #component
+
+  constructor(projectManager) {
+    this.#projectManager = projectManager;
+    this.#component = this.#projectManager.renderSidebarComponent();
+  }
+
+  setMediator(mediator) {
+    this.#mediator = mediator;
+  }
+  
+  render() {
+    this.#component = this.#projectManager.renderSidebarComponent();
+  }
+
+  getComponent() {
+    return this.#component;
+  }
+}
+
 const projectsManager = (function initProjectsManagerIIFE() {
   let idCounter = 1;
   const projectsList = [];
