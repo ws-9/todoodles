@@ -10,11 +10,15 @@ class Application {
   }
 
   notify({ component, event, projectId, todoId, }) {
-    console.log("Component:");
-    console.log(component);
-    console.log(`Event: ${event}`);
-    console.log(`Project: ${projectId}`);
-    console.log(`Todo: ${todoId}`);
+    switch (event) {
+      case "itemSelected":
+        const body = document.querySelector("body");
+        body.removeChild(body.lastElementChild);
+        body.append(this.#mainContent.render(projectId, todoId));
+        break;
+      default:
+        break;
+    }
   }
 
   init() {
