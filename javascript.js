@@ -370,6 +370,26 @@ class Todo {
     this.#description = description;
   }
 
+  renderMainContentComponent() {
+    const mainContentComponent = document.createElement("div");
+    mainContentComponent.classList = "main-content todo-item-content";
+    mainContentComponent.append(
+        document.createElement("h1"),
+        document.createElement("p")
+    );
+    mainContentComponent.firstElementChild.textContent = this.#title;
+    mainContentComponent.lastElementChild.textContent = this.#description;
+    return mainContentComponent;
+  }
+
+  renderMainContentProjectItemComponent() {
+    const temp = document.createElement("div");
+    const text = document.createElement("h1");
+    text.textContent = `Todo ID: ${this.#id}`;
+    temp.append(text);
+    return temp;
+  }
+
   renderSidebarComponent() {
     const todoItem = document.createElement("li");
     todoItem.className = "todo-item";
