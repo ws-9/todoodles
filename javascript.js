@@ -122,6 +122,14 @@ const projectsManager = (function initProjectsManagerIIFE() {
   let idCounter = 1;
   const projectsList = [];
 
+  function renderMainContentComponent(projectId, todoId) {
+    if (projectId !== undefined && todoId === undefined) {
+      return getProject(projectId).renderMainContentComponent();
+    } else if (projectId !== undefined && todoId !== undefined) {
+      return getTodoFromProject(projectId, todoId).renderMainContentComponent();
+    }
+  }
+
   function renderSidebarComponent() {
     const sidebar = document.createElement("div");
     sidebar.className = "sidebar";
@@ -209,6 +217,7 @@ const projectsManager = (function initProjectsManagerIIFE() {
   }
 
   return {
+    renderMainContentComponent,
     renderSidebarComponent,
     getProjects,
     addProject,
