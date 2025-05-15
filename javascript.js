@@ -240,6 +240,17 @@ class Project {
     this.#hidden = hidden;
   }
 
+  renderMainContentComponent() {
+    const mainContentComponent = document.createElement("div");
+    mainContentComponent.classList = "main-content project-content"
+
+    for (const todo of this.#todosList) {
+      mainContentComponent.appendChild(todo.renderMainContentProjectItemComponent());
+    }
+    console.log(mainContentComponent);
+    return mainContentComponent;
+  }
+
   renderSidebarComponent() {
     const projectItem = document.createElement("li");
     projectItem.className = "project-item";
