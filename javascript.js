@@ -122,12 +122,21 @@ const projectsManager = (function initProjectsManagerIIFE() {
   let idCounter = 1;
   const projectsList = [];
 
-  function renderMainContentComponent(projectId, todoId) {
-    if (projectId !== undefined && todoId === undefined) {
-      return getProject(projectId).renderMainContentComponent();
-    } else if (projectId !== undefined && todoId !== undefined) {
-      return getTodoFromProject(projectId, todoId).renderMainContentComponent();
-    }
+  function renderEmptyMainContent() {
+    const mainContent = document.createElement("div");
+    mainContent.classList = "main-content todo-item-content"
+    mainContent.append(document.createElement("h1"), document.createElement("p"));
+    mainContent.firstElementChild.textContent = "This is a to-do.";
+    mainContent.lastElementChild.textContent = "This is a to-do description.";
+    return mainContent;
+  }
+
+  function renderProjectMainContent(projectId) {
+    return getProject(projectId).renderMainContentComponent();
+  }
+
+  function renderTodoMainContent(projectId, todoId) {
+    return getTodoFromProject(projectId, todoId).renderMainContentComponent();
   }
 
   function renderSidebarComponent() {
@@ -217,7 +226,9 @@ const projectsManager = (function initProjectsManagerIIFE() {
   }
 
   return {
-    renderMainContentComponent,
+    renderEmptyMainContent,
+    renderProjectMainContent,
+    renderTodoMainContent,
     renderSidebarComponent,
     getProjects,
     addProject,
