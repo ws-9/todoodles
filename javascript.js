@@ -71,11 +71,13 @@ class SideBar {
       /* Selected project using its display */
       if (e.target.closest(".project-item-display") && e.target.tagName != "BUTTON") {
         const projectId = +e.target.closest("li.project-item").dataset.projectId;
-        this.#mediator.notify({
-          component: this,
-          event: "itemSelected",
-          projectId: projectId,
-        });
+        if (!Number.isNaN(projectId)) {
+          this.#mediator.notify({
+            component: this,
+            event: "itemSelected",
+            projectId: projectId,
+          });
+        }
       /* Selected dropdown button */
       } else if (e.target.closest(".project-item-display") && e.target.tagName === "BUTTON") {
         let projectId = +e.target.closest("li.project-item").dataset.projectId;
@@ -93,12 +95,14 @@ class SideBar {
         if (e.target.closest("li[data-todo-id]")) {
           const projectId = +e.target.closest("li.project-item").dataset.projectId;
           const todoId = +e.target.parentElement.dataset.todoId;
-          this.#mediator.notify({
-            component: this,
-            event: "itemSelected",
-            projectId: projectId,
-            todoId: todoId
-          });
+          if (!Number.isNaN(projectId) && !Number.isNaN(todoId)) {
+            this.#mediator.notify({
+              component: this,
+              event: "itemSelected",
+              projectId: projectId,
+              todoId: todoId
+            });
+          }
         }
       });
     });
