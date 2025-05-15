@@ -19,49 +19,40 @@ class Application {
 
   init() {
     const body = document.querySelector("body");
-    body.insertAdjacentElement("afterbegin", this.#sidebar.getComponent());
-    body.insertAdjacentElement("beforeend", this.#mainContent.getComponent());
+    body.insertAdjacentElement("afterbegin", this.#sidebar.render());
+    body.insertAdjacentElement("beforeend", this.#mainContent.render());
   }
 }
 
 class MainContent {
   #mediator;
   #projectManager;
-  #component;
 
   constructor(projectManager) {
     this.#projectManager = projectManager;
-    this.render();
   }
 
   setMediator(mediator) {
     this.#mediator = mediator;
   }
 
-  render() {
-    const mainContent = document.createElement("div");
-    mainContent.classList = "main-content todo-item-content";
-
-    mainContent.append(document.createElement("h1"), document.createElement("p"));
-    mainContent.firstElementChild.textContent = "This is a to-do.";
-    mainContent.lastElementChild.textContent = "This is a to-do description.";
-
-    this.#component = mainContent;
-  }
-
-  getComponent() {
-    return this.#component;
+  render(projectId, todoId) {
+    if (projectId === undefined && todoId === undefined) {
+      return this.#projectManager.renderEmptyMainContent();
+    } else if (projectId !== undefined && todoId === undefined) {
+      return this.#projectManager.renderProjectMainContent(projectId);
+    } else if (projectId !== undefined && todoId !== undefined) {
+      return this.#projectManager.renderTodoMainContent(projectId, todoId);
+    }
   }
 }
 
 class SideBar {
   #mediator;
   #projectManager;
-  #component
 
   constructor(projectManager) {
     this.#projectManager = projectManager;
-    this.render();
   }
 
   setMediator(mediator) {
@@ -69,13 +60,9 @@ class SideBar {
   }
   
   render() {
-    if (this.#component === undefined) {
-      this.#component = this.#projectManager.renderSidebarComponent();
-    } else {
-      this.#component.replaceWith(this.#projectManager.renderSidebarComponent());
-    }
+    const component = this.#projectManager.renderSidebarComponent();
 
-    const projectsList = this.#component.querySelector("ul.projects-list");
+    const projectsList = component.querySelector("ul.projects-list");
     projectsList.addEventListener("click", (e) => {
       /* Selected project using its display */
       if (e.target.closest(".project-item-display") && e.target.tagName != "BUTTON") {
@@ -111,10 +98,8 @@ class SideBar {
         }
       });
     });
-  }
 
-  getComponent() {
-    return this.#component;
+    return component;
   }
 }
 
