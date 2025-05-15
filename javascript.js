@@ -79,7 +79,7 @@ class SideBar {
     projectsList.addEventListener("click", (e) => {
       /* Selected project using its display */
       if (e.target.closest(".project-item-display") && e.target.tagName != "BUTTON") {
-        const projectId = e.target.closest("li.project-item").dataset.projectId;
+        const projectId = +e.target.closest("li.project-item").dataset.projectId;
         this.#mediator.notify({
           component: this,
           event: "itemSelected",
@@ -100,8 +100,8 @@ class SideBar {
       project.querySelector("ul.todo-list").addEventListener("click", (e) => {
         /* Selected to-do from the to-do list */
         if (e.target.closest("li[data-todo-id]")) {
-          const projectId = e.target.closest("li.project-item").dataset.projectId;
-          const todoId = e.target.parentElement.dataset.todoId;
+          const projectId = +e.target.closest("li.project-item").dataset.projectId;
+          const todoId = +e.target.parentElement.dataset.todoId;
           this.#mediator.notify({
             component: this,
             event: "itemSelected",
