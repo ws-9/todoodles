@@ -256,7 +256,6 @@ class Project {
     for (const todo of this.#todosList) {
       mainContentComponent.appendChild(todo.renderMainContentProjectItemComponent());
     }
-    console.log(mainContentComponent);
     return mainContentComponent;
   }
 
