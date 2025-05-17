@@ -10,11 +10,15 @@ class Application {
   }
 
   notify({ component, event, projectId, todoId, }) {
+    const body = document.querySelector("body");
     switch (event) {
       case "itemSelected":
-        const body = document.querySelector("body");
         body.removeChild(body.lastElementChild);
-        body.append(this.#mainContent.render(projectId, todoId));
+        body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
+        break;
+      case "itemUpdatedInMainContent":
+        body.removeChild(body.firstElementChild);
+        body.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
       default:
         break;
