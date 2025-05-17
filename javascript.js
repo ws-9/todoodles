@@ -50,7 +50,20 @@ class MainContent {
     } else if (projectId !== undefined && todoId === undefined) {
       return this.#projectManager.renderProjectMainContent(projectId);
     } else if (projectId !== undefined && todoId !== undefined) {
-      return this.#projectManager.renderTodoMainContent(projectId, todoId);
+      const mainContent = this.#projectManager.renderTodoMainContent(projectId, todoId);
+      const title = mainContent.querySelector("input.todo-title");
+      title.addEventListener("blur", (e) => {
+        const projectId = +mainContent.dataset.projectId;
+        const todoId = +mainContent.dataset.todoId;
+        if (!Number.isNaN(projectId) && !Number.isNaN(todoId)) {
+          this.#projectManager.updateTodoFromProject(projectId, todoId, { title: e.target.value })
+          this.#mediator.notify({
+            component: this,
+            event: "itemUpdatedInMainContent",
+          });
+        }
+      });
+      return mainContent;
     }
   }
 }
