@@ -255,7 +255,7 @@ class Project {
 
   renderMainContentComponent() {
     const mainContentComponent = document.createElement("div");
-    mainContentComponent.classList = "main-content project-content"
+    mainContentComponent.classList = "main-content project-item-content"
 
     for (const todo of this.#todosList) {
       mainContentComponent.appendChild(todo.renderMainContentProjectItemComponent());
