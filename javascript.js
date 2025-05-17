@@ -16,7 +16,9 @@ class Application {
         body.removeChild(body.lastElementChild);
         body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
         break;
-      case "itemUpdatedInMainContent":
+      case "itemUpdatedInMainContent":        
+        body.removeChild(body.lastElementChild);
+        body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
         body.removeChild(body.firstElementChild);
         body.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
@@ -60,6 +62,8 @@ class MainContent {
           this.#mediator.notify({
             component: this,
             event: "itemUpdatedInMainContent",
+            projectId: projectId,
+            todoId: todoId
           });
         }
       });
