@@ -129,7 +129,10 @@ const projectsManager = (function initProjectsManagerIIFE() {
   }
 
   function renderTodoMainContent(projectId, todoId) {
-    return getTodoFromProject(projectId, todoId).renderMainContentComponent();
+    const mainContent = getTodoFromProject(projectId, todoId).renderMainContentComponent();
+    mainContent.dataset.projectId = projectId;
+    mainContent.dataset.todoId = todoId;
+    return mainContent;
   }
 
   function renderSidebarComponent() {
@@ -396,11 +399,14 @@ class Todo {
   renderMainContentComponent() {
     const mainContentComponent = document.createElement("div");
     mainContentComponent.classList = "main-content todo-item-content";
+    const title = document.createElement("input");
+    title.className = "todo-title";
+    title.setAttribute("type", "text");
+    title.setAttribute("value", this.#title);
     mainContentComponent.append(
-        document.createElement("h1"),
+        title,
         document.createElement("p")
     );
-    mainContentComponent.firstElementChild.textContent = this.#title;
     mainContentComponent.lastElementChild.textContent = this.#description;
     return mainContentComponent;
   }
