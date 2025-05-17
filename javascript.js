@@ -453,6 +453,21 @@ class Todo {
     this.#description = description;
   }
 
+  update(updates) {
+    for (const [key, value] of Object.entries(updates)) {
+      const setterName = `set${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+      if (typeof this[setterName] === "function") {
+        if (setterName === "setTitle") {
+          this[setterName](value || "Default To-Do Title");
+        } else {
+          this[setterName](value);
+        }
+      } else {
+        console.warn(`No setter found for property "${key}"`);
+      }
+    }
+  }
+
   clone() {
     return new Todo({
       id: this.#id,
