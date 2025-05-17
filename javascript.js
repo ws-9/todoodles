@@ -117,7 +117,7 @@ const projectsManager = (function initProjectsManagerIIFE() {
 
   function renderEmptyMainContent() {
     const mainContent = document.createElement("div");
-    mainContent.classList = "main-content todo-item-content"
+    mainContent.classList = "main-content empty-content"
     mainContent.append(document.createElement("h1"), document.createElement("p"));
     mainContent.firstElementChild.textContent = "This is a to-do.";
     mainContent.lastElementChild.textContent = "This is a to-do description.";

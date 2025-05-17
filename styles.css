@@ -46,6 +46,10 @@ body {
 
 }
 
+.main-content.empty-content {
+  
+}
+
 .project-item-display {
   display: flex;
   justify-content: space-between;
