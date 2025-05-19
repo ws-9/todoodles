@@ -152,7 +152,6 @@ const projectsManager = (function initProjectsManagerIIFE() {
   function renderTodoMainContent(projectId, todoId) {
     const mainContent = getTodoFromProject(projectId, todoId).renderMainContentComponent();
     mainContent.dataset.projectId = projectId;
-    mainContent.dataset.todoId = todoId;
     return mainContent;
   }
 
@@ -420,6 +419,7 @@ class Todo {
   renderMainContentComponent() {
     const mainContentComponent = document.createElement("div");
     mainContentComponent.classList = "main-content todo-item-content";
+    mainContentComponent.dataset.todoId = this.#id;
     const title = document.createElement("input");
     title.className = "todo-title";
     title.setAttribute("type", "text");
