@@ -42,6 +42,11 @@ body {
   grid-column: 2;
 }
 
+.todo-item-content .todo-main-content-display {
+  display: flex;
+  justify-content: space-between;
+}
+
 .main-content.project-item-content {
   display: grid;
   grid-template-columns: 1fr min(80ch, 100%) 1fr;
@@ -55,6 +60,11 @@ body {
 
 .project-item-content .todo-card {
   border: 1px solid black;
+}
+
+.project-item-content .project-main-content-display {
+  display: flex;
+  justify-content: space-between;
 }
 
 .main-content.empty-content {

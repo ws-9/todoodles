@@ -309,16 +309,27 @@ class Project {
     const mainContentComponent = document.createElement("div");
     mainContentComponent.classList = "main-content project-item-content";
     mainContentComponent.dataset.projectId = this.#id;
+
+    const projectTopDisplay = document.createElement("div");
+    projectTopDisplay.className = "project-main-content-display";
+
     const projectName = document.createElement("h2");
     projectName.className = "project-name"
     projectName.textContent = this.#name;
     projectName.setAttribute("contentEditable", true);
+
+    const contextMenuBtn = document.createElement("button");
+    contextMenuBtn.classList = "project-context-menu-btn";
+    contextMenuBtn.textContent = "⋯";
+
+    projectTopDisplay.append(projectName, contextMenuBtn);
+
     const todoContainer = document.createElement("div");
     todoContainer.className = "todo-container";
     for (const todo of this.#todosList) {
       todoContainer.appendChild(todo.renderMainContentProjectItemComponent());
     }
-    mainContentComponent.append(projectName, todoContainer);
+    mainContentComponent.append(projectTopDisplay, todoContainer);
     return mainContentComponent;
   }
 
@@ -460,12 +471,22 @@ class Todo {
     const mainContentComponent = document.createElement("div");
     mainContentComponent.classList = "main-content todo-item-content";
     mainContentComponent.dataset.todoId = this.#id;
+
+    const todoTopDisplay = document.createElement("div");
+    todoTopDisplay.className = "todo-main-content-display";
+
     const title = document.createElement("h2");
     title.className = "todo-title";
     title.textContent = this.#title;
     title.setAttribute("contentEditable", "plaintext-only");
+
+    const contextMenuBtn = document.createElement("button");
+    contextMenuBtn.classList = "todo-context-menu-btn";
+    contextMenuBtn.textContent = "⋯";
+    
+    todoTopDisplay.append(title, contextMenuBtn);
     mainContentComponent.append(
-        title,
+        todoTopDisplay,
         document.createElement("p")
     );
     mainContentComponent.lastElementChild.textContent = this.#description;
