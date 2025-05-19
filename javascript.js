@@ -53,12 +53,12 @@ class MainContent {
       return this.#projectManager.renderProjectMainContent(projectId);
     } else if (projectId !== undefined && todoId !== undefined) {
       const mainContent = this.#projectManager.renderTodoMainContent(projectId, todoId);
-      const title = mainContent.querySelector("input.todo-title");
+      const title = mainContent.querySelector(".todo-title");
       title.addEventListener("blur", (e) => {
         const projectId = +mainContent.dataset.projectId;
         const todoId = +mainContent.dataset.todoId;
         if (!Number.isNaN(projectId) && !Number.isNaN(todoId)) {
-          this.#projectManager.updateTodoFromProject(projectId, todoId, { title: e.target.value })
+          this.#projectManager.updateTodoFromProject(projectId, todoId, { title: e.target.textContent })
           this.#mediator.notify({
             component: this,
             event: "itemUpdatedInMainContent",
@@ -420,10 +420,10 @@ class Todo {
     const mainContentComponent = document.createElement("div");
     mainContentComponent.classList = "main-content todo-item-content";
     mainContentComponent.dataset.todoId = this.#id;
-    const title = document.createElement("input");
+    const title = document.createElement("h2");
     title.className = "todo-title";
-    title.setAttribute("type", "text");
-    title.setAttribute("value", this.#title);
+    title.textContent = this.#title;
+    title.setAttribute("contentEditable", "plaintext-only");
     mainContentComponent.append(
         title,
         document.createElement("p")
