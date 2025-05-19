@@ -50,7 +50,36 @@ class MainContent {
     if (projectId === undefined && todoId === undefined) {
       return this.#projectManager.renderEmptyMainContent();
     } else if (projectId !== undefined && todoId === undefined) {
-      return this.#projectManager.renderProjectMainContent(projectId);
+      const mainContent = this.#projectManager.renderProjectMainContent(projectId);
+      const projectName = mainContent.querySelector("h2.project-name");
+      projectName.addEventListener("blur", (e) => {
+        const projectId = +mainContent.dataset.projectId;
+        if (!Number.isNaN(projectId)) {
+          this.#projectManager.updateProject(projectId, { name: e.target.textContent });
+          this.#mediator.notify({
+            component: this,
+            event: "itemUpdatedInMainContent",
+            projectId: projectId
+          });
+        }
+      });
+      const todoContainer = mainContent.querySelector("div.todo-container");
+      todoContainer.addEventListener("click", (e) => {
+        const todoCard = e.target.closest(".todo-card")
+        if (todoCard) {
+          const projectId = +mainContent.dataset.projectId;
+          const todoId = +todoCard.dataset.todoId;
+          if (!Number.isNaN(projectId) && !Number.isNaN(todoId)) {
+            this.#mediator.notify({
+              component: this,
+              event: "itemSelected",
+              projectId: projectId,
+              todoId: todoId
+            });
+          }
+        }
+      });
+      return mainContent;
     } else if (projectId !== undefined && todoId !== undefined) {
       const mainContent = this.#projectManager.renderTodoMainContent(projectId, todoId);
       const title = mainContent.querySelector(".todo-title");
@@ -278,11 +307,18 @@ class Project {
 
   renderMainContentComponent() {
     const mainContentComponent = document.createElement("div");
-    mainContentComponent.classList = "main-content project-item-content"
-
+    mainContentComponent.classList = "main-content project-item-content";
+    mainContentComponent.dataset.projectId = this.#id;
+    const projectName = document.createElement("h2");
+    projectName.className = "project-name"
+    projectName.textContent = this.#name;
+    projectName.setAttribute("contentEditable", true);
+    const todoContainer = document.createElement("div");
+    todoContainer.className = "todo-container";
     for (const todo of this.#todosList) {
-      mainContentComponent.appendChild(todo.renderMainContentProjectItemComponent());
+      todoContainer.appendChild(todo.renderMainContentProjectItemComponent());
     }
+    mainContentComponent.append(projectName, todoContainer);
     return mainContentComponent;
   }
 
@@ -383,7 +419,11 @@ class Project {
     for (const [key, value] of Object.entries(updates)) {
       const setterName = `set${key.charAt(0).toUpperCase()}${key.slice(1)}`;
       if (typeof this[setterName] === "function") {
-        this[setterName](value);
+        if (setterName === "setName") {
+          this[setterName](value || "Default Project Name");
+        } else {
+          this[setterName](value);
+        }
       } else {
         console.warn(`No setter found for property "${key}"`);
       }
@@ -433,11 +473,15 @@ class Todo {
   }
 
   renderMainContentProjectItemComponent() {
-    const temp = document.createElement("div");
-    const text = document.createElement("h1");
-    text.textContent = `Todo ID: ${this.#id}`;
-    temp.append(text);
-    return temp;
+    const todoCard = document.createElement("div");
+    todoCard.className = "todo-card"
+    todoCard.dataset.todoId = this.#id;
+    const todoTitle = document.createElement("h3");
+    const dueDate = document.createElement("h4");
+    todoTitle.textContent = this.#title;
+    dueDate.textContent = this.#dueDate ?? "No due date";
+    todoCard.append(todoTitle, dueDate);
+    return todoCard;
   }
 
   renderSidebarComponent() {

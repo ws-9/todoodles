@@ -43,7 +43,18 @@ body {
 }
 
 .main-content.project-item-content {
+  display: grid;
+  grid-template-columns: 1fr min(80ch, 100%) 1fr;
+  padding-inline: 16px;
+  grid-auto-rows: max-content;
+}
 
+.project-item-content > * {
+  grid-column: 2;
+}
+
+.project-item-content .todo-card {
+  border: 1px solid black;
 }
 
 .main-content.empty-content {
