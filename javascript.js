@@ -360,7 +360,7 @@ class Project {
     const contextMenuContainer = document.createElement("div");
     contextMenuContainer.className = "project-context-menu-container";
 
-    const contextMenuBtn = document.createElement("div");
+    const contextMenuBtn = document.createElement("button");
     contextMenuBtn.classList = "project-context-menu-btn";
     contextMenuBtn.textContent = "⋯";
 
