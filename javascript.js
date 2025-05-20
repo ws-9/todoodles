@@ -63,6 +63,15 @@ class MainContent {
           });
         }
       });
+
+      const contextMenuContainer = mainContent.querySelector(".project-context-menu-container");
+      const contextMenuBtn = contextMenuContainer.firstElementChild;
+      const contextMenu = contextMenuBtn.firstElementChild;
+      console.log(contextMenu)
+      contextMenuBtn.addEventListener("click", (e) => {
+        contextMenu.classList.toggle("hidden");
+      });
+
       const todoContainer = mainContent.querySelector("div.todo-container");
       todoContainer.addEventListener("click", (e) => {
         const todoCard = e.target.closest(".todo-card")
@@ -318,11 +327,22 @@ class Project {
     projectName.textContent = this.#name;
     projectName.setAttribute("contentEditable", true);
 
-    const contextMenuBtn = document.createElement("button");
+    const contextMenuContainer = document.createElement("div");
+    contextMenuContainer.className = "project-context-menu-container";
+
+    const contextMenuBtn = document.createElement("div");
     contextMenuBtn.classList = "project-context-menu-btn";
     contextMenuBtn.textContent = "⋯";
 
-    projectTopDisplay.append(projectName, contextMenuBtn);
+    const contextMenu = document.createElement("ul");
+    contextMenu.classList = "project-context-menu hidden";
+    contextMenu.appendChild(document.createElement("li"));
+    contextMenu.lastElementChild.textContent = "Delete Project"
+
+    contextMenuBtn.appendChild(contextMenu);
+
+    contextMenuContainer.append(contextMenuBtn);
+    projectTopDisplay.append(projectName, contextMenuContainer);
 
     const todoContainer = document.createElement("div");
     todoContainer.className = "todo-container";

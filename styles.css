@@ -67,6 +67,21 @@ body {
   justify-content: space-between;
 }
 
+.project-context-menu-container {
+  /* position: relative; */
+}
+
+.project-context-menu-container > .project-context-menu-btn {
+  position: relative;
+}
+
+.project-context-menu-btn > .project-context-menu {
+  position: absolute;
+  margin-top: 5px;
+  right: 0;
+  min-width: 6rem;
+}
+
 .main-content.empty-content {
   
 }
