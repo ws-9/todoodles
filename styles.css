@@ -67,6 +67,10 @@ body {
   justify-content: space-between;
 }
 
+.project-main-content-display > .project-name {
+  flex: 1;
+}
+
 .project-context-menu-container {
   /* position: relative; */
 }

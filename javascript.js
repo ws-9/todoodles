@@ -22,6 +22,10 @@ class Application {
         body.removeChild(body.firstElementChild);
         body.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
+      case "itemEditedInMainContent":
+        body.removeChild(body.firstElementChild);
+        body.insertAdjacentElement("afterbegin", this.#sidebar.render());
+        break;
       default:
         break;
     }
@@ -51,15 +55,16 @@ class MainContent {
       return this.#projectManager.renderEmptyMainContent();
     } else if (projectId !== undefined && todoId === undefined) {
       const mainContent = this.#projectManager.renderProjectMainContent(projectId);
-      const projectName = mainContent.querySelector("h2.project-name");
-      projectName.addEventListener("blur", (e) => {
+      const projectName = mainContent.querySelector("input.project-name");
+      projectName.setAttribute("type", "text");
+      projectName.addEventListener("change", (e) => {
         const projectId = +mainContent.dataset.projectId;
         if (!Number.isNaN(projectId)) {
-          this.#projectManager.updateProject(projectId, { name: e.target.textContent });
+          this.#projectManager.updateProject(projectId, { name: e.target.value.trim() });
+          e.target.value = this.#projectManager.getProject(projectId).getName();
           this.#mediator.notify({
             component: this,
-            event: "itemUpdatedInMainContent",
-            projectId: projectId
+            event: "itemEditedInMainContent",
           });
         }
       });
@@ -352,9 +357,9 @@ class Project {
     const projectTopDisplay = document.createElement("div");
     projectTopDisplay.className = "project-main-content-display";
 
-    const projectName = document.createElement("h2");
+    const projectName = document.createElement("input");
     projectName.className = "project-name"
-    projectName.textContent = this.#name;
+    projectName.value = this.#name;
     projectName.setAttribute("contentEditable", true);
 
     const contextMenuContainer = document.createElement("div");
