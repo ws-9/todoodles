@@ -16,7 +16,7 @@ class Application {
         body.removeChild(body.lastElementChild);
         body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
         break;
-      case "itemUpdatedInMainContent":        
+      case "itemUpdatedInMainContent":
         body.removeChild(body.lastElementChild);
         body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
         body.removeChild(body.firstElementChild);
@@ -67,9 +67,32 @@ class MainContent {
       const contextMenuContainer = mainContent.querySelector(".project-context-menu-container");
       const contextMenuBtn = contextMenuContainer.firstElementChild;
       const contextMenu = contextMenuBtn.firstElementChild;
-      console.log(contextMenu)
       contextMenuBtn.addEventListener("click", (e) => {
         contextMenu.classList.toggle("hidden");
+        if (!contextMenu.classList.contains("hidden")) {
+          e.stopPropagation();
+          document.addEventListener("click", closeOnClick);
+        }
+        function closeOnClick() {
+          contextMenu.classList.add("hidden");
+          document.removeEventListener("click", closeOnClick);
+        }
+      });
+
+      contextMenu.addEventListener("click", (e) => {
+        if (e.target === contextMenu.firstElementChild) {
+          /* Add todo here */
+        } else if ((e.target === contextMenu.lastElementChild)) {
+          const projectId = +mainContent.dataset.projectId;
+          if (!Number.isNaN(projectId)) {
+            this.#projectManager.deleteProject(projectId);
+            this.#mediator.notify({
+              component: this,
+              event: "itemUpdatedInMainContent",
+            });
+          }
+        }
+
       });
 
       const todoContainer = mainContent.querySelector("div.todo-container");
@@ -336,7 +359,8 @@ class Project {
 
     const contextMenu = document.createElement("ul");
     contextMenu.classList = "project-context-menu hidden";
-    contextMenu.appendChild(document.createElement("li"));
+    contextMenu.append(document.createElement("li"), document.createElement("li"));
+    contextMenu.firstElementChild.textContent = "Add New To-do"
     contextMenu.lastElementChild.textContent = "Delete Project"
 
     contextMenuBtn.appendChild(contextMenu);

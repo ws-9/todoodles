@@ -77,9 +77,10 @@ body {
 
 .project-context-menu-btn > .project-context-menu {
   position: absolute;
+  background-color: azure;
   margin-top: 5px;
   right: 0;
-  min-width: 6rem;
+  min-width: 8rem;
 }
 
 .main-content.empty-content {
