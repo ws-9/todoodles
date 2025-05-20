@@ -80,19 +80,26 @@ class MainContent {
       });
 
       contextMenu.addEventListener("click", (e) => {
-        if (e.target === contextMenu.firstElementChild) {
-          /* Add todo here */
-        } else if ((e.target === contextMenu.lastElementChild)) {
-          const projectId = +mainContent.dataset.projectId;
-          if (!Number.isNaN(projectId)) {
-            this.#projectManager.deleteProject(projectId);
-            this.#mediator.notify({
-              component: this,
-              event: "itemUpdatedInMainContent",
-            });
-          }
+        const projectId = +mainContent.dataset.projectId;
+        if (Number.isNaN(projectId)) {
+          return;
         }
 
+        if (e.target === contextMenu.firstElementChild) {
+          this.#projectManager.addTodoToProject(projectId, new Todo({ title: "New To-do" }));
+          this.#mediator.notify({
+            component: this,
+            event: "itemUpdatedInMainContent",
+            projectId: projectId,
+          });
+          /* Add todo here */
+        } else if (e.target === contextMenu.lastElementChild) {
+          this.#projectManager.deleteProject(projectId);
+          this.#mediator.notify({
+            component: this,
+            event: "itemUpdatedInMainContent",
+          });
+        }
       });
 
       const todoContainer = mainContent.querySelector("div.todo-container");
