@@ -53,6 +53,22 @@ body {
   justify-content: space-between;
 }
 
+.todo-main-content-display > .todo-title {
+  flex: 1
+}
+
+.todo-context-menu-btn {
+  position: relative;
+}
+
+.todo-context-menu-btn > .todo-context-menu {
+  position: absolute;
+  background-color: azure;
+  margin-top: 5px;
+  right: 0;
+  min-width: 8rem;
+}
+
 .main-content.project-item-content {
   display: grid;
   grid-template-columns: 1fr min(80ch, 100%) 1fr;

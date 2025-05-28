@@ -140,6 +140,38 @@ class MainContent {
           });
         }
       });
+
+      const contextMenuBtn = mainContent.querySelector(".todo-context-menu-btn");
+      const contextMenu = contextMenuBtn.firstElementChild;
+      contextMenuBtn.addEventListener("click", (e) => {
+        contextMenu.classList.toggle("hidden");
+        if (!contextMenu.classList.contains("hidden")) {
+          e.stopPropagation();
+          document.addEventListener("click", closeOnClick);
+        }
+        function closeOnClick() {
+          contextMenu.classList.add("hidden");
+          document.removeEventListener("click", closeOnClick);
+        }
+      });
+
+      contextMenu.addEventListener("click", (e) => {
+        const projectId = +mainContent.dataset.projectId;
+        const todoId = +mainContent.dataset.todoId;
+        if (Number.isNaN(projectId) || Number.isNaN(todoId) ) {
+          return;
+        }
+
+        if (e.target === contextMenu.firstElementChild) {
+          this.#projectManager.deleteTodoFromProject(projectId, todoId);
+          this.#mediator.notify({
+            component: this,
+            event: "itemUpdatedInMainContent",
+            projectId: projectId,
+          });
+        }
+      });
+
       return mainContent;
     }
   }
@@ -535,7 +567,14 @@ class Todo {
     contextMenuBtn.classList = "todo-context-menu-btn";
     contextMenuBtn.textContent = "⋯";
     
+    const contextMenu = document.createElement("ul");
+    contextMenu.classList = "todo-context-menu hidden";
+    contextMenu.appendChild(document.createElement("li"));
+    contextMenu.firstElementChild.textContent = "Delete To-do"
+
+    contextMenuBtn.appendChild(contextMenu);
     todoTopDisplay.append(title, contextMenuBtn);
+
     mainContentComponent.append(
         todoTopDisplay,
         document.createElement("p")
