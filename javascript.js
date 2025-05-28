@@ -10,17 +10,17 @@ class Application {
   }
 
   notify({ component, event, projectId, todoId, }) {
-    const body = document.querySelector("body");
+    const webpageContainer = document.querySelector(".webpage-container");
     switch (event) {
       case "itemSelected":
-        body.removeChild(body.lastElementChild);
-        body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
+        webpageContainer.removeChild(webpageContainer.lastElementChild);
+        webpageContainer.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
         break;
       case "itemUpdatedInMainContent":
-        body.removeChild(body.lastElementChild);
-        body.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
-        body.removeChild(body.firstElementChild);
-        body.insertAdjacentElement("afterbegin", this.#sidebar.render());
+        webpageContainer.removeChild(webpageContainer.lastElementChild);
+        webpageContainer.insertAdjacentElement("beforeend", this.#mainContent.render(projectId, todoId));
+        webpageContainer.removeChild(webpageContainer.firstElementChild);
+        webpageContainer.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
       case "itemEditedInMainContent":
         body.removeChild(body.firstElementChild);
@@ -32,9 +32,11 @@ class Application {
   }
 
   init() {
-    const body = document.querySelector("body");
-    body.insertAdjacentElement("afterbegin", this.#sidebar.render());
-    body.insertAdjacentElement("beforeend", this.#mainContent.render());
+    const webpageContainer = document.createElement("div");
+    webpageContainer.className = "webpage-container";
+    webpageContainer.insertAdjacentElement("afterbegin", this.#sidebar.render());
+    webpageContainer.insertAdjacentElement("beforeend", this.#mainContent.render());
+    document.querySelector("body").appendChild(webpageContainer);
   }
 }
 

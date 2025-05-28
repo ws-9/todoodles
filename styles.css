@@ -5,6 +5,12 @@
 }
 
 body {
+  display: grid;
+  grid-template-columns: 1fr min(60rem, 100%) 1fr;
+}
+
+.webpage-container {
+  grid-column: 2;
   display: flex;
 }
 
