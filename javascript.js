@@ -23,8 +23,8 @@ class Application {
         webpageContainer.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
       case "itemEditedInMainContent":
-        body.removeChild(body.firstElementChild);
-        body.insertAdjacentElement("afterbegin", this.#sidebar.render());
+        webpageContainer.removeChild(webpageContainer.firstElementChild);
+        webpageContainer.insertAdjacentElement("afterbegin", this.#sidebar.render());
         break;
       default:
         break;
@@ -362,7 +362,6 @@ class Project {
     const projectName = document.createElement("input");
     projectName.className = "project-name"
     projectName.value = this.#name;
-    projectName.setAttribute("contentEditable", true);
 
     const contextMenuContainer = document.createElement("div");
     contextMenuContainer.className = "project-context-menu-container";
