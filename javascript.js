@@ -192,6 +192,15 @@ class SideBar {
   render() {
     const component = this.#projectManager.renderSidebarComponent();
 
+    const addProjectBtn = component.querySelector(".sidebar-top > button");
+    addProjectBtn.addEventListener("click", (e) => {
+      this.#projectManager.addProject(new Project({ name: "New Project" }));
+      this.#mediator.notify({
+        component: this,
+        event: "itemEditedInMainContent",
+      });
+    });
+
     const projectsList = component.querySelector("ul.projects-list");
     projectsList.addEventListener("click", (e) => {
       /* Selected project using its display */
