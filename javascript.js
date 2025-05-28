@@ -58,7 +58,6 @@ class MainContent {
     } else if (projectId !== undefined && todoId === undefined) {
       const mainContent = this.#projectManager.renderProjectMainContent(projectId);
       const projectName = mainContent.querySelector("input.project-name");
-      projectName.setAttribute("type", "text");
       projectName.addEventListener("change", (e) => {
         const projectId = +mainContent.dataset.projectId;
         if (!Number.isNaN(projectId)) {
@@ -129,11 +128,11 @@ class MainContent {
     } else if (projectId !== undefined && todoId !== undefined) {
       const mainContent = this.#projectManager.renderTodoMainContent(projectId, todoId);
       const title = mainContent.querySelector(".todo-title");
-      title.addEventListener("blur", (e) => {
+      title.addEventListener("change", (e) => {
         const projectId = +mainContent.dataset.projectId;
         const todoId = +mainContent.dataset.todoId;
         if (!Number.isNaN(projectId) && !Number.isNaN(todoId)) {
-          this.#projectManager.updateTodoFromProject(projectId, todoId, { title: e.target.textContent })
+          this.#projectManager.updateTodoFromProject(projectId, todoId, { title: e.target.value.trim() })
           this.#mediator.notify({
             component: this,
             event: "itemUpdatedInMainContent",
@@ -362,6 +361,7 @@ class Project {
     const projectName = document.createElement("input");
     projectName.className = "project-name"
     projectName.value = this.#name;
+    projectName.setAttribute("type", "text");
 
     const contextMenuContainer = document.createElement("div");
     contextMenuContainer.className = "project-context-menu-container";
@@ -532,10 +532,10 @@ class Todo {
     const todoTopDisplay = document.createElement("div");
     todoTopDisplay.className = "todo-main-content-display";
 
-    const title = document.createElement("h2");
+    const title = document.createElement("input");
     title.className = "todo-title";
-    title.textContent = this.#title;
-    title.setAttribute("contentEditable", "plaintext-only");
+    title.value = this.#title;
+    title.setAttribute("type", "text");
 
     const contextMenuBtn = document.createElement("button");
     contextMenuBtn.classList = "todo-context-menu-btn";
