@@ -70,8 +70,7 @@ class MainContent {
         }
       });
 
-      const contextMenuContainer = mainContent.querySelector(".project-context-menu-container");
-      const contextMenuBtn = contextMenuContainer.firstElementChild;
+      const contextMenuBtn = mainContent.querySelector(".project-context-menu-btn");
       const contextMenu = contextMenuBtn.firstElementChild;
       contextMenuBtn.addEventListener("click", (e) => {
         contextMenu.classList.toggle("hidden");
@@ -363,9 +362,6 @@ class Project {
     projectName.value = this.#name;
     projectName.setAttribute("type", "text");
 
-    const contextMenuContainer = document.createElement("div");
-    contextMenuContainer.className = "project-context-menu-container";
-
     const contextMenuBtn = document.createElement("button");
     contextMenuBtn.classList = "project-context-menu-btn";
     contextMenuBtn.textContent = "⋯";
@@ -377,9 +373,7 @@ class Project {
     contextMenu.lastElementChild.textContent = "Delete Project"
 
     contextMenuBtn.appendChild(contextMenu);
-
-    contextMenuContainer.append(contextMenuBtn);
-    projectTopDisplay.append(projectName, contextMenuContainer);
+    projectTopDisplay.append(projectName, contextMenuBtn);
 
     const todoContainer = document.createElement("div");
     todoContainer.className = "todo-container";

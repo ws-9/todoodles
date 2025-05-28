@@ -77,11 +77,7 @@ body {
   flex: 1;
 }
 
-.project-context-menu-container {
-  /* position: relative; */
-}
-
-.project-context-menu-container > .project-context-menu-btn {
+.project-context-menu-btn {
   position: relative;
 }
 
