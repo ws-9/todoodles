@@ -246,133 +246,6 @@ export class SideBar {
   }
 }
 
-export const projectsManager = (function initProjectsManagerIIFE() {
-  let idCounter = 1;
-  const projectsList = [];
-
-  function renderEmptyMainContent() {
-    const mainContent = document.createElement("div");
-    mainContent.classList = "main-content empty-content"
-    mainContent.append(document.createElement("h1"), document.createElement("p"));
-    mainContent.firstElementChild.textContent = "This is a to-do.";
-    mainContent.lastElementChild.textContent = "This is a to-do description.";
-    return mainContent;
-  }
-
-  function renderProjectMainContent(projectId) {
-    return getProject(projectId).renderMainContentComponent();
-  }
-
-  function renderTodoMainContent(projectId, todoId) {
-    const mainContent = getTodoFromProject(projectId, todoId).renderMainContentComponent();
-    mainContent.dataset.projectId = projectId;
-    return mainContent;
-  }
-
-  function renderSidebarComponent() {
-    const sidebar = document.createElement("div");
-    sidebar.className = "sidebar";
-    const sidebarTop = document.createElement("div");
-    sidebarTop.className = "sidebar-top";
-    sidebarTop.appendChild(document.createElement("h1"));
-    sidebarTop.firstElementChild.textContent = "Projects";
-    sidebarTop.appendChild(document.createElement("button"));
-    sidebarTop.lastElementChild.textContent = "Add Project";
-
-    const sidebarProjectsList = document.createElement("ul");
-    sidebarProjectsList.className = "projects-list";
-
-    for (const project of projectsList) {
-      sidebarProjectsList.appendChild(project.renderSidebarComponent());
-    }
-
-    sidebar.append(sidebarTop, sidebarProjectsList);
-    return sidebar;
-  }
-
-  function getProjects() {
-    return projectsList.map(project => project.clone());
-  }
-
-  function addProject(project) {
-    project.setId(idCounter++);
-    projectsList.push(project);
-  }
-
-  function getProject(id) {
-    return projectsList.find(project => project.getId() === id)?.clone() ?? null;
-  }
-
-  function updateProject(id, updates) {
-    const project = projectsList.find(project => project.getId() === id);
-    if (!project) {
-      return false;
-    }
-    project.update(updates);
-    return true;
-  }
-
-  function deleteProject(id) {
-    const deletedIndex = projectsList.findIndex(project => project.getId() === id);
-    if (deletedIndex !== -1) {
-      return projectsList.splice(deletedIndex, 1);
-    }
-    return null;
-  }
-
-  function addTodoToProject(projectId, todo) {
-    const project = projectsList.find(project => project.getId() === projectId);
-    if (project) {
-      project.addTodo(todo);
-    }
-  }
-
-  function getTodosFromProject(projectId) {
-    const project = projectsList.find(project => project.getId() === projectId);
-    if (project) {
-      return project.getTodos();
-    }
-  }
-
-  function getTodoFromProject(projectId, todoId) {
-    const project = projectsList.find(project => project.getId() === projectId);
-    if (project) {
-      return project.getTodo(todoId);
-    }
-  }
-
-  function updateTodoFromProject(projectId, todoId, updates) {
-    const project = projectsList.find(project => project.getId() === projectId);
-    if (project) {
-      return project.updateTodo(todoId, updates);
-    }
-  }
-
-  function deleteTodoFromProject(projectId, todoId) {
-    const project = projectsList.find(project => project.getId() === projectId);
-    if (project) {
-      return project.deleteTodo(todoId);
-    }
-  }
-
-  return {
-    renderEmptyMainContent,
-    renderProjectMainContent,
-    renderTodoMainContent,
-    renderSidebarComponent,
-    getProjects,
-    addProject,
-    getProject,
-    updateProject,
-    deleteProject,
-    addTodoToProject,
-    getTodosFromProject,
-    getTodoFromProject,
-    updateTodoFromProject,
-    deleteTodoFromProject
-  }
-})();
-
 export class Project {
   #id;
   #name;
@@ -499,6 +372,10 @@ export class Project {
 
   getTodo(todoId) {
     return this.#todosList.find(todo => todo.getId() === todoId)?.clone() ?? null;
+  }
+
+  getIdCounter() {
+    return this.#idCounter;
   }
 
   updateTodo(todoId, updates) {
@@ -644,6 +521,14 @@ export class Todo {
     this.#description = description;
   }
 
+  getDueDate() {
+    return this.#dueDate;
+  }
+
+  setDueDate(dueDate) {
+    this.#dueDate = dueDate;
+  }
+
   update(updates) {
     for (const [key, value] of Object.entries(updates)) {
       const setterName = `set${key.charAt(0).toUpperCase()}${key.slice(1)}`;
@@ -667,3 +552,187 @@ export class Todo {
     });
   }
 }
+
+export const projectsManager = (function initProjectsManagerIIFE() {
+  let idCounter = 1;
+  const projectsList = [];
+
+  const userDataJson = localStorage.getItem("userData");
+  if (userDataJson !== null) {
+    const userData = JSON.parse(userDataJson);
+    idCounter = userData.idCounter;
+    userData.projectsList.forEach(project => {
+      projectsList.push(new Project({
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        todos: project.todos.map(todo => {
+          return new Todo({
+            id: todo.id,
+            title: todo.title,
+            description: todo.description,
+            dueDate: todo.dueDate,
+          });
+        }),
+        idCounter: project.idCounter,
+        hidden: project.hidden
+      }))
+    });
+  }
+
+  function renderEmptyMainContent() {
+    const mainContent = document.createElement("div");
+    mainContent.classList = "main-content empty-content"
+    mainContent.append(document.createElement("h1"), document.createElement("p"));
+    mainContent.firstElementChild.textContent = "This is a to-do.";
+    mainContent.lastElementChild.textContent = "This is a to-do description.";
+    return mainContent;
+  }
+
+  function renderProjectMainContent(projectId) {
+    return getProject(projectId).renderMainContentComponent();
+  }
+
+  function renderTodoMainContent(projectId, todoId) {
+    const mainContent = getTodoFromProject(projectId, todoId).renderMainContentComponent();
+    mainContent.dataset.projectId = projectId;
+    return mainContent;
+  }
+
+  function renderSidebarComponent() {
+    const sidebar = document.createElement("div");
+    sidebar.className = "sidebar";
+    const sidebarTop = document.createElement("div");
+    sidebarTop.className = "sidebar-top";
+    sidebarTop.appendChild(document.createElement("h1"));
+    sidebarTop.firstElementChild.textContent = "Projects";
+    sidebarTop.appendChild(document.createElement("button"));
+    sidebarTop.lastElementChild.textContent = "Add Project";
+
+    const sidebarProjectsList = document.createElement("ul");
+    sidebarProjectsList.className = "projects-list";
+
+    for (const project of projectsList) {
+      sidebarProjectsList.appendChild(project.renderSidebarComponent());
+    }
+
+    sidebar.append(sidebarTop, sidebarProjectsList);
+    return sidebar;
+  }
+
+  function getProjects() {
+    return projectsList.map(project => project.clone());
+  }
+
+  function addProject(project) {
+    project.setId(idCounter++);
+    projectsList.push(project);
+    backup();
+  }
+
+  function getProject(id) {
+    return projectsList.find(project => project.getId() === id)?.clone() ?? null;
+  }
+
+  function updateProject(id, updates) {
+    const project = projectsList.find(project => project.getId() === id);
+    if (!project) {
+      return false;
+    }
+    project.update(updates);
+    backup();
+    return true;
+  }
+
+  function deleteProject(id) {
+    const deletedIndex = projectsList.findIndex(project => project.getId() === id);
+    if (deletedIndex !== -1) {
+      const deletedProject = projectsList.splice(deletedIndex, 1);
+      backup();
+      return deletedProject;
+    }
+    return null;
+  }
+
+  function addTodoToProject(projectId, todo) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      project.addTodo(todo);
+      backup();
+    }
+  }
+
+  function getTodosFromProject(projectId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.getTodos();
+    }
+  }
+
+  function getTodoFromProject(projectId, todoId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      return project.getTodo(todoId);
+    }
+  }
+
+  function updateTodoFromProject(projectId, todoId, updates) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      const updated = project.updateTodo(todoId, updates);
+      backup();
+      return updated;
+    }
+  }
+
+  function deleteTodoFromProject(projectId, todoId) {
+    const project = projectsList.find(project => project.getId() === projectId);
+    if (project) {
+      const deletedProject = project.deleteTodo(todoId);
+      backup();
+      return deletedProject;
+    }
+  }
+
+  function backup() {
+    const json = {
+      idCounter: idCounter,
+      projectsList: projectsList.map(project => {
+        return {
+          id: project.getId(),
+          name: project.getName(),
+          description: project.getDescription(),
+          todos: project.getTodos().map((todo) => {
+            return {
+              id: todo.getId(),
+              title: todo.getTitle(),
+              description: todo.getDescription(),
+              dueDate: todo.getDueDate()
+            }
+          }),
+          idCounter: project.getIdCounter(),
+          hidden: project.getHidden()
+        }
+      }),
+    }
+    localStorage.setItem("userData", JSON.stringify(json));
+    return json;
+  }
+
+  return {
+    renderEmptyMainContent,
+    renderProjectMainContent,
+    renderTodoMainContent,
+    renderSidebarComponent,
+    getProjects,
+    addProject,
+    getProject,
+    updateProject,
+    deleteProject,
+    addTodoToProject,
+    getTodosFromProject,
+    getTodoFromProject,
+    updateTodoFromProject,
+    deleteTodoFromProject,
+  }
+})();
